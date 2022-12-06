@@ -6,6 +6,8 @@ bool IsNumberInRange(int min, int max, int num)
 }
 
 int sum = 0;
+List<List<int>> prev = new List<List<int>>();
+int i = 0;
 foreach(string line in lines)
 {
     string[] pair = line.Split(",");
@@ -16,11 +18,19 @@ foreach(string line in lines)
 
     if (IsNumberInRange(nelf2[0], nelf2[1], nelf1[0]) && IsNumberInRange(nelf2[0], nelf2[1], nelf1[1]))
     {
+        prev.Add(new List<int>{ nelf1[0], nelf1[1] });
         sum++;
     }
     else if (IsNumberInRange(nelf1[0], nelf1[1], nelf2[0]) && IsNumberInRange(nelf1[0], nelf1[1], nelf2[1]))
     {
+        prev.Add(new List<int> { nelf2[0], nelf2[1] });
         sum++;
     }
+    i++;
+    if (i % 2 == 0)
+    {
+
+
+        prev = new List<List<int>>();
+    }
 }
-Console.WriteLine(sum);
