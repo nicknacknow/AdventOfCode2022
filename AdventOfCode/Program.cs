@@ -1,27 +1,26 @@
 ﻿string[] lines = File.ReadAllLines(@"M:\Programming\AdventOfCode\input.txt");
 
-int GetPriority(char c)
+bool IsNumberInRange(int min, int max, int num)
 {
-    return char.IsLower(c) ? (c - 'a' + 1) : (c - 'A' + 27);
-}
-
-char FindCommonCharacter(string s1, string s2, string s3)
-{
-    foreach (char c in s1)
-    {
-        if (s2.IndexOf(c) != -1 && s3.IndexOf(c) != -1)
-            return c;
-    }
-    return '\0';
+    return (num >= min && num <= max);
 }
 
 int sum = 0;
-for (int i = 0; i < lines.Length - 2; i += 3)
+foreach(string line in lines)
 {
-    string s1 = lines[i];
-    string s2 = lines[i + 1];
-    string s3 = lines[i + 2];
+    string[] pair = line.Split(",");
+    string[] elf1 = pair[0].Split("-");
+    string[] elf2 = pair[1].Split("-");
+    int[] nelf1 = { int.Parse(elf1[0]), int.Parse(elf1[1]) };
+    int[] nelf2 = { int.Parse(elf2[0]), int.Parse(elf2[1]) };
 
-    sum += GetPriority(FindCommonCharacter(s1, s2, s3));
+    if (IsNumberInRange(nelf2[0], nelf2[1], nelf1[0]) && IsNumberInRange(nelf2[0], nelf2[1], nelf1[1]))
+    {
+        sum++;
+    }
+    else if (IsNumberInRange(nelf1[0], nelf1[1], nelf2[0]) && IsNumberInRange(nelf1[0], nelf1[1], nelf2[1]))
+    {
+        sum++;
+    }
 }
 Console.WriteLine(sum);
