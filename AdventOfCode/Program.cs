@@ -1,38 +1,27 @@
 ﻿string[] lines = File.ReadAllLines(@"M:\Programming\AdventOfCode\input.txt");
 
-Dictionary<string, int> values = new Dictionary<string, int>
+int GetPriority(char c)
 {
-    ["A"] = 1, // rock
-    ["B"] = 2, // paper         OPPONENT
-    ["C"] = 3, // scissors
-
-    ["X"] = 1, // rock
-    ["Y"] = 2, // paper
-    ["Z"] = 3, // scissors
-};
-
-
-int total_score = 0;
-foreach (string line in lines)
-{
-    string[] inp = line.Split(" ");
-    string opp = inp[0];
-    string us = inp[1];
-
-    if (us == "X") // LOSE NOW
-        us = (values[opp] == 1) ? "Z" : values.FirstOrDefault(x=> x.Value == (values[opp] - 1)).Key;
-    else if (us == "Y") // DRAW NOW
-        us = opp;
-    else // win
-        us = (values[opp] == 3) ? "X" : values.FirstOrDefault(x => x.Value == (values[opp] + 1)).Key;
-
-
-    if (values[us] == values[opp]) // we draw
-        total_score += (values[us] + 3);
-    else if (values[us] - values[opp] == 1 || values[us] - values[opp] == -2) // we win
-        total_score += (values[us] + 6);
-    else //(values[us] < values[opp]) // we lose
-        total_score += (values[us]);
+    return char.IsLower(c) ? (c - 'a' + 1) : (c - 'A' + 27);
 }
 
-Console.WriteLine(total_score);
+char FindCommonCharacter(string s1, string s2, string s3)
+{
+    foreach (char c in s1)
+    {
+        if (s2.IndexOf(c) != -1 && s3.IndexOf(c) != -1)
+            return c;
+    }
+    return '\0';
+}
+
+int sum = 0;
+for (int i = 0; i < lines.Length - 2; i += 3)
+{
+    string s1 = lines[i];
+    string s2 = lines[i + 1];
+    string s3 = lines[i + 2];
+
+    sum += GetPriority(FindCommonCharacter(s1, s2, s3));
+}
+Console.WriteLine(sum);
